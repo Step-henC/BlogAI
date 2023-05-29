@@ -1,4 +1,5 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { AppLayout } from "../../components/AppLayout";
 
 
 
@@ -10,6 +11,11 @@ export default function NewPost() {
          </div>;
     }
     
+
+    //for this to work, we have to add it to our _app.js
+    NewPost.getLayout = function getLayout(page, pageProps) {
+        return <AppLayout {...pageProps}>{page}</AppLayout>
+    }
 
     //function within nextjs that runs server side whenever this page is requested
     //can return objects or redirects

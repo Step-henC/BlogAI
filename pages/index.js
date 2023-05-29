@@ -1,6 +1,9 @@
-import Link from 'next/link';
-import {useUser} from '@auth0/nextjs-auth0/client'; //lets us know if user is logged in or not auto from auth0
-import Image from 'next/image';
+import Image from "next/image";
+import HeroImage from '../public/hero.webp'
+import { Logo } from "../components/logo";
+import Link from "next/link";
+
+
 export default function Home() {
 //tailwind css comes with reset css out of the box for consistency across browsers
 //pages provide routes to this home page
@@ -9,35 +12,22 @@ export default function Home() {
 
 //the [..auth] directory is automatically recognized by oauth 
 
-const {user} = useUser(); //check to see if user exists
+//hero.webp was added by instructor
 
 
 
-  return <div> 
-    <h1>This is the home page</h1>
-    <div>
-      {/* if user is set, render info from auth0 and logout button that we copy from login, if not render sign in link */}
-      { !!user ? 
-      
-      
-      <>
-      {/* use nextjs image because of additional features
-        Must add the domain of the auth0 image which is s.gravitar.com, to next.config.js
-        add like: images: {
-          domains: ['s.gravitar.com'],
-        }
-        rerun npm run dev due to config changes
-        if no provided image, auth0 will make an image */}
-      <Image src={user.picture} alt={user.name} height={50} width={50}></Image>
-      <div>
-        {user.email}
+
+  return (
+  
+  <div className="w-screen h-screen overflow-hidden flex justify-center items-center relative"> 
+    
+      <Image src={HeroImage} alt="hero" fill className="absolute"></Image>
+      <div className="relative z-10 text-white px-10 py-5 text-center max-w-screen-sm bg-slate-900/90 rounded-md backdrop-blur-sm">
+        <Logo/>
+        <p>A SEO solution that leverages AI to return blog posts that fit personal requests.</p>
+         <Link href="/post/new" className='btn'>Get Started!</Link>  
       </div>
-      <Link href="/api/auth/logout">Logout</Link>
-      </> 
-      
-      
-      : <Link href="/api/auth/login">Login</Link>} 
-
+    
     </div>
-     </div>;
+  );
 }
