@@ -14,6 +14,7 @@ export default function NewPost() {
     const [postContent, setPostContent] = useState("");
     const [title, setTitle] = useState("");
     const [ metaDescription, setMetaDescription] = useState("");
+    const [aiResponse, setAiResponse] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault(); //prevent default posting of this form to itself
@@ -31,6 +32,7 @@ export default function NewPost() {
         setPostContent(json.post.postContent);
         setTitle(json.post.title);
         setMetaDescription(json.post.metaDescription);
+        setAiResponse(json.post);
     }
       return <div> 
 
@@ -57,11 +59,11 @@ export default function NewPost() {
         </form>
    
         
-        <div className="max-w-screen-sm p-10" >
+        <div className="max-w-screen-sm p-10" dangerouslySetInnerHTML={{__html: postContent}}>
        {/* dangerouslySetInnerHTML={{__html: postContent.title}} */}
-            <h1 >{title}</h1>
+            {/* <h1 >{title}</h1>
             <h3>{postContent}</h3>
-            <h3>{metaDescription}</h3>
+            <h3>{metaDescription}</h3> */}
         </div>
          </div>;
     }

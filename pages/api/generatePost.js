@@ -49,7 +49,7 @@ export default async function handler(req, res) {
         }, {
             role:"user", 
             content: `Write a long and detailed SEO-friendly blog post about ${topic}, that targets the following keywords ${keywords}. 
-            The content should be formatted in SEO friendly HTML, 
+            The blog post must be formatted in HTML, 
             limited to the following HTML tags: p, h1, h2, h3, h4, h5, h6, strong, li, ol, ul, i.`
 
         },]
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
         }, {
             role:"user", 
             content: `Write a long and detailed SEO-friendly blog post about ${topic}, that targets the following keywords ${keywords}. 
-            The content must be formatted in HTML, 
+            The blog post must be formatted in HTML, 
             limited to the following HTML tags: p, h1, h2, h3, h4, h5, h6, strong, li, ol, ul, i.`
 
         }, {
@@ -75,7 +75,7 @@ export default async function handler(req, res) {
             content: postContent
     }, {
         role: "user",
-        content: "Generate an appropriate title tag text for the above blog post"
+        content: "Generate an appropriate HTML title text for the above blog post"
     },]
 
     })
@@ -90,7 +90,7 @@ export default async function handler(req, res) {
         }, {
             role:"user", 
             content: `Write a long and detailed SEO-friendly blog post about ${topic}, that targets the following keywords ${keywords}. 
-            The content must be formatted in HTML, 
+            The blog post must be formatted in HTML, 
             limited to the following HTML tags: p, h1, h2, h3, h4, h5, h6, strong, li, ol, ul, i`
 
         }, {
@@ -98,7 +98,7 @@ export default async function handler(req, res) {
             content: postContent
     }, {
         role: "user",
-        content: "Generate SEO-friendly meta description content for the above blog post"
+        content: "Generate an appropriate HTML formatted and SEO-friendly meta description content for the above blog post"
     }]
 
     })
