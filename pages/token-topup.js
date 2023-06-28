@@ -3,10 +3,24 @@ import { AppLayout } from "../components/AppLayout";
 
 
 export default function TokenTopup() {
+
+    const handleClick = async (e) => {
+        e.preventDefault();
+        const response = await fetch(`/api/addTokens`, {
+            method: 'POST'
+      
+        });
+      console.log(response);
+        
+
+
+
+    }
     //tailwind css comes with reset css out of the box for consistency across browsers
     //pages provide routes to this home page
       return <div> 
         <h1>This is the token topup page</h1>
+        <button className="btn" onClick={handleClick}>Add Tokens</button>
          </div>;
     }
     

@@ -1,10 +1,25 @@
 import {Configuration, OpenAIApi} from 'openai'; //instructor install openai already
-
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0'; //wraps function in security from logged in users with auth0
+import clientPromise from '../../lib/mongodb';
 
 
 //npm start app auto gives an api example where the json here is the reponse to the call 
 //add async
-export default async function handler(req, res) {
+export default withApiAuthRequired(async function handler(req, res) {
+
+    //check user and token
+    const { user } = await getSession(req, res);
+    const client = await clientPromise;
+    const db = client.db('BlogStandard');
+    const userProfile = await db.collection("users").findOne({
+        auth0Id: user.sub
+    });
+
+    if (!userProfile?.availableTokens) {
+        res.status(401); // 403 means user is authorized but does not have permission (tokens ) for request
+        return;
+    }
+
 
     const config = new Configuration({
         apiKey: process.env.OPENAI_API_KEY
@@ -109,6 +124,32 @@ export default async function handler(req, res) {
     console.log("POST CONTENT", postContent);
     console.log("TITLE", title);
     console.log("META DESCR", metaDescription);
+
+    await db.collection("users").updateOne({
+        auth0Id: user.sub
+    }, {
+        $inc: {
+           availableTokens: -1
+        }
+    });
+
+    const parsedJson = {
+        postContent,
+        title,
+        metaDescription,
+    }; 
+
+    const post = await db.collection("posts").insertOne({ // store blog post in database
+
+        postContent: parsedJson?.postContent,
+        title: parsedJson?.title,
+        metaDescription: parsedJson?.metaDescription,
+        topic,
+        keywords,
+        userId: userProfile._id, //auto generated mongo ID
+        created: new Date(),
+    })
+
     res.status(200).json({
         post: {
             postContent,
@@ -116,5 +157,5 @@ export default async function handler(req, res) {
             metaDescription,
         },
     })
-  }
+  })
   

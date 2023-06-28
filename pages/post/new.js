@@ -58,13 +58,14 @@ export default function NewPost() {
         </button>
         </form>
    
-        
-        <div className="max-w-screen-sm p-10" dangerouslySetInnerHTML={{__html: postContent}}>
+        <div className="max-w-screen-sm p-10" dangerouslySetInnerHTML={{__html: title}}></div>
+        <div className="max-w-screen-sm p-10" dangerouslySetInnerHTML={{__html: postContent}}></div>
+        <div className="max-w-screen-sm p-10">{metaDescription}</div>
        {/* dangerouslySetInnerHTML={{__html: postContent.title}} */}
             {/* <h1 >{title}</h1>
             <h3>{postContent}</h3>
             <h3>{metaDescription}</h3> */}
-        </div>
+        
          </div>;
     }
     
