@@ -3,12 +3,40 @@ import { AppLayout } from "../../components/AppLayout";
 import  clientPromise  from "../../lib/mongodb";
 import { ObjectId } from "mongodb";
 import { getSession } from "@auth0/nextjs-auth0";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHashtag } from "@fortawesome/free-solid-svg-icons";
+import { getAppProps } from "../../utils/getAppProps";
 
 export default function Post(props) {
     //square brackets in the name create a dynamic route since the post value in URL can be any value (unique id)
-      return <div> 
-        <h1>This is the home page</h1>
-         </div>;
+      return (
+      <div className="overflow-auto h-full"> 
+        <div className="max-w-screen-sm mx-auto">
+            <div>
+
+            </div>
+            <div className="text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm">
+                SEO Title and Meta Description
+            </div>
+            <div className="p-4 my-2 border border-stone-200 rounded-md">
+                <div className="text-blue-600 text-2xl font-bold">{props.title.replace("<title>", "").replace("</title>", "") || ''} </div> 
+                <div className="mt-2">{props.metaDescription.replace("<meta name=\"description\" content=", '').replace(">", "") || ''}</div>
+
+            </div>
+            <div className="text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm">
+                Keywords
+            </div>
+            <div className="flex flex-wrap pt-2 gap-1">{props.keywords.split(",").map((keyword, i) => (
+                <div key={i} className="p-2 rounded-full bg-slate-800 text-white">
+                   <FontAwesomeIcon icon={faHashtag}/> {keyword}
+                    </div>
+            ))}</div>
+            <div className="text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm">
+                Blog Post
+            </div>
+            <div  dangerouslySetInnerHTML={{__html: props.postContent || ""}}/>
+        </div>
+     </div>)
     }
     
 
@@ -20,6 +48,8 @@ export default function Post(props) {
     export const getServerSideProps = withPageAuthRequired({
 
         async getServerSideProps(ctx){
+
+            const props = await getAppProps(ctx);
 
                 const userSession = await getSession(ctx.req, ctx.res);
                 const client = await clientPromise;
@@ -44,10 +74,11 @@ export default function Post(props) {
 
                 return {
                     props: {
-                        postcontent: post.postContent, // all from db
+                        postContent: post.postContent, // all from db
                         title: post.title,
                         metaDescription: post.metaDescription,
-                        keywords: post.keywords
+                        keywords: post.keywords,
+                        ...props,
                     }
                 }
 

@@ -83,11 +83,12 @@ export default function NewPost() {
     //can return objects or redirects
     //but auth0 takes care of that for us when wrapped with withPageAuthRequired
     //copy past this function into pages we want secured with login users
-    export const getServerSideProps = withPageAuthRequired(() => {
+    export const getServerSideProps = withPageAuthRequired({
 
-        return {
-            props: {
-                
-            }
+        async getServerSideProps(ctx){
+          const props = await getAppProps(ctx);
+          return {
+              props
+          };
         }
-    });
+      });
