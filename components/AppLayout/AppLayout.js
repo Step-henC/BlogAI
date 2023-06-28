@@ -28,7 +28,7 @@ export const AppLayout = ({children}) => {
                     </Link>
                 </div>
                 <div className="flex-1 overflow-auto bg-gradient-to-b from-slate-800 to-cyan-800">lists of posts</div>
-                <div className="bg-cyan-800 flex items-center gap-2 border-t border-t-black/50" h-20 px-2>
+                <div className="bg-cyan-800 flex items-center gap-2 border-t border-t-black/50 h-20 px-2">
                     {/* if user is set, render info from auth0 and logout button that we copy from login, if not render sign in link */}
       { !!user ? 
       

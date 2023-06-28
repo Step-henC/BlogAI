@@ -150,12 +150,10 @@ export default withApiAuthRequired(async function handler(req, res) {
         created: new Date(),
     })
 
+    console.log('post', post);
+
     res.status(200).json({
-        post: {
-            postContent,
-            title,
-            metaDescription,
-        },
+        postId: post.insertedId, //instead of directly calling post obj from chat-gpt, we call post id from mongo to populate existing posts
     })
   })
   

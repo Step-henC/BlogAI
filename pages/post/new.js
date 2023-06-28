@@ -1,20 +1,20 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { AppLayout } from "../../components/AppLayout";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 
 
 export default function NewPost() {
+    const router = useRouter();
     //tailwind css comes with reset css out of the box for consistency across browsers
     //pages provide routes to this home page
 
 
     const [topic, setTopic] = useState("");
     const [keywords, setKeywords] = useState("");
-    const [postContent, setPostContent] = useState("");
-    const [title, setTitle] = useState("");
-    const [ metaDescription, setMetaDescription] = useState("");
-    const [aiResponse, setAiResponse] = useState("");
+    
+   
 
     const handleSubmit = async (e) => {
         e.preventDefault(); //prevent default posting of this form to itself
@@ -29,10 +29,15 @@ export default function NewPost() {
         });
         
         const json = await response.json();
-        setPostContent(json.post.postContent);
-        setTitle(json.post.title);
-        setMetaDescription(json.post.metaDescription);
-        setAiResponse(json.post);
+        if(json?.postId) {
+
+            router.push(`/post/${json.postId}`);
+        }
+ 
+     
+      
+        // setTitle(json.post.title);
+        // setMetaDescription(json.post.metaDescription);
     }
       return <div> 
 
@@ -57,10 +62,9 @@ export default function NewPost() {
             Generate
         </button>
         </form>
-   
+{/*    
         <div className="max-w-screen-sm p-10" dangerouslySetInnerHTML={{__html: title}}></div>
-        <div className="max-w-screen-sm p-10" dangerouslySetInnerHTML={{__html: postContent}}></div>
-        <div className="max-w-screen-sm p-10">{metaDescription}</div>
+        <div className="max-w-screen-sm p-10" dangerouslySetInnerHTML={{__html: metaDescription}}></div> */}
        {/* dangerouslySetInnerHTML={{__html: postContent.title}} */}
             {/* <h1 >{title}</h1>
             <h3>{postContent}</h3>
