@@ -11,10 +11,10 @@ export default function TokenTopup() {
             method: 'POST'
       
         });
-      console.log(response);
+      const json = await response.json(); //make sure you add 'await'
+      
+     window.location.href = json.session.url; // console logging response reveals response body w/ url property that sends to stripe page
         
-
-
 
     }
     //tailwind css comes with reset css out of the box for consistency across browsers

@@ -31,30 +31,20 @@ export default async function handler(req, res) {
         line_items: lineItems,
         mode: "payment",
         success_url: `${protocol}${host}/success`,
-
-    })
-
-    const client = await clientPromise; // lieves in lib -> mongoDb.js 
-    const db = client.db('BlogStandard');
-
-    const userProfile = await db.collection('users').updateOne({
-        auth0Id: user.sub //mongo will create one if not existent or upsert
-    }, {
-        $inc: {
-            availableTokens: 10 //dollar sign inc tells mongoDb to increment by 10 in our case
+        payment_intent_data: {
+            metadata: {
+                sub: user.sub
+            }
         },
-        $setOnInsert: {
-            auth0Id: user.sub // if user does not exist then set this property
+        metadata: {
+            sub: user.sub
         }
-    }, {
-        upsert: true //yeah
-    })
 
+    })
 
     //if not create one
 
     //if so then add tokens
-
 
 
     res.status(200).json({session: checkOutSession})
