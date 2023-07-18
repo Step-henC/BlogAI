@@ -3,6 +3,8 @@ import { AppLayout } from "../../components/AppLayout";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { getAppProps } from "../../utils/getAppProps";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBrain } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -14,6 +16,7 @@ export default function NewPost() {
 
     const [topic, setTopic] = useState("");
     const [keywords, setKeywords] = useState("");
+    const [generating, setGenerating] = useState(false);
     
    
 
@@ -21,6 +24,9 @@ export default function NewPost() {
         e.preventDefault(); //prevent default posting of this form to itself
         //calls browser built in fetch call and is async because it returns a promis
         {/* @ts-expect-error Async Server Component */}
+        setGenerating(true);
+
+        try {
         const response = await fetch(`/api/generatePost`, {
             method: 'POST',
             headers: {
@@ -34,15 +40,25 @@ export default function NewPost() {
 
             router.push(`/post/${json.postId}`);
         }
+    }catch(e) {
+        setGenerating(false); //still gonna load spinner if api failure
+    }
  
      
       
         // setTitle(json.post.title);
         // setMetaDescription(json.post.metaDescription);
     }
-      return <div> 
-
-        <form onSubmit={handleSubmit}>
+      return <div className=" h-full overflow-hidden"> 
+      {generating && (
+      <div className="text-green-500 flex h-full animate-pulse w-full flex-col justify-center items-center">
+        <FontAwesomeIcon icon={faBrain} className="text-8xl"/>
+        <h6>Generating ...</h6>
+      </div>
+)}
+      {!generating && (
+<div className="w-full h-full flex flex-col overflow-auto">
+        <form onSubmit={handleSubmit} className="m-auto w-full max-w-screen-sm bg-slate-100 p-4 rounded-md shadow-xl border border-slate-200 shadow-slate-200">
             <div>
                     <label>
                         <strong>
@@ -58,6 +74,9 @@ export default function NewPost() {
                         </strong>
                     </label>
                     <textarea className="resize-none border-slate-500 w-full block my-2 px-4 py-2 rounded-sm" value={keywords} onChange={(e) => setKeywords(e.target.value)}/>
+                    <small className="display-block">
+                        Separate keywords with a comma
+                    </small>
             </div>
         <button type="submit" className="btn">
             Generate
@@ -71,6 +90,8 @@ export default function NewPost() {
             <h3>{postContent}</h3>
             <h3>{metaDescription}</h3> */}
         
+        </div>
+)}
          </div>;
     }
     
