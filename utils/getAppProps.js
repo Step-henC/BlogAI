@@ -18,7 +18,7 @@ export const getAppProps = async (ctx) => {
 
     const posts = await db.collection("posts").find({
         userId: user._id
-    }).sort({
+    }).limit(5).sort({
         created: -1 //newest to oldest 
     }).toArray(); // built in mongo function toArray
 

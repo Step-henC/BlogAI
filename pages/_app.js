@@ -1,9 +1,12 @@
 import '../styles/globals.css'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import {DM_Sans, DM_Serif_Display} from '@next/font/google'
-import { config } from "@fortawesome/fontawesome-svg-core/styles.css"
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
-config.autoAddCss = false; //prevents massive fontawesome logo loading in production environment (not dev) that is a result
+import { config } from '@fortawesome/fontawesome-svg-core'
+import { PostProvider } from '../context/postsContext';
+
+config.autoAddCSS = false; //prevents massive fontawesome logo loading in production environment (not dev) that is a result
                             //of fontawesome loading before CSS
 
 //make custom  classes in tailwind.config.js in the theme block by adding extend -> fontFamily
@@ -34,11 +37,12 @@ function MyApp({ Component, pageProps }) {
   //need userProvider to be able to leverage useUser in index.js
   return <UserProvider> 
 
+<PostProvider>
         {/* instead of passing components, wrap the component in a get layout function passing the page and pageProps */}
         {/* wrap layout in main to make font specs available for entier app */}
 
        <main className={`${dmSans.variable} ${dmSerifDisplay.variable} font-body`}> {getLayout(<Component {...pageProps}/>, pageProps)}</main>
-        
+       </PostProvider>
         </UserProvider>
 }
 
