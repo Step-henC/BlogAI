@@ -30,7 +30,15 @@ export default withApiAuthRequired(async function handler(req, res) {
 
     const {topic, keywords} = req.body;
 
+    if(!topic || !keywords) {
+        res.status(422) //unprocess-able entity
+        return;
+    }
     
+    if(topic.length > 80 || keywords.length > 80) {
+        res.status(422) //unprocess-able entity
+        return;
+    }
 
     //chat gpt4 is not publicly available yet
     // const response = await openAi.createCompletion({

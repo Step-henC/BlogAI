@@ -65,7 +65,7 @@ export default function NewPost() {
                             Generate a blog on the topic of:
                         </strong>
                     </label>
-                    <textarea className="resize-none border-slate-500 w-full block my-2 px-4 py-2 rounded-sm" value={topic} onChange={(e) => setTopic(e.target.value)}/>
+                    <textarea  maxLength={80} className="resize-none border-slate-500 w-full block my-2 px-4 py-2 rounded-sm" value={topic} onChange={(e) => setTopic(e.target.value)}/>
             </div>
             <div>
             <label>
@@ -73,12 +73,12 @@ export default function NewPost() {
                             Targeting the following keywords:
                         </strong>
                     </label>
-                    <textarea className="resize-none border-slate-500 w-full block my-2 px-4 py-2 rounded-sm" value={keywords} onChange={(e) => setKeywords(e.target.value)}/>
+                    <textarea maxLength={80} className="resize-none border-slate-500 w-full block my-2 px-4 py-2 rounded-sm" value={keywords} onChange={(e) => setKeywords(e.target.value)}/>
                     <small className="display-block">
                         Separate keywords with a comma
                     </small>
             </div>
-        <button type="submit" className="btn">
+        <button type="submit" className="btn" disabled={!topic.trim() || !keywords.trim()}>
             Generate
         </button>
         </form>
@@ -109,6 +109,14 @@ export default function NewPost() {
 
         async getServerSideProps(ctx){
           const props = await getAppProps(ctx);
+          if (!props.availableTokens) { //if no tkens, redirect to add tokens page
+            return {
+                redirect: {
+                    destination: "/token-topup",
+                    permanent: false
+                }
+            }
+          }
           return {
               props
           };
